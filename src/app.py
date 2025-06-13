@@ -1,7 +1,7 @@
 # src/app.py
 
 import streamlit as st
-from src.rag_chat import generate_rag_response
+from rag_chat import generate_rag_response
 
 st.set_page_config(page_title="📚 RAG Chatbot", layout="wide")
 
