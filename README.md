@@ -1,150 +1,147 @@
-# GAL-RAG-System
+### 🌍 Live Demo
 
-A modular document parsing and semantic search pipeline using Unstructured.io, OpenAI embeddings, and FAISS — with a Streamlit interface for querying.
+This project is fully **Dockerized** and deployed on an **AWS EC2 instance**:
 
----
+🔗 **Try it here**: [http://65.2.113.254:8501/](http://65.2.113.254:8501/)
 
-## 📦 Features
+* The chatbot is pre-loaded with sample legal documents from the `samples/` folder, which acts as the **knowledge base**.
+* Users can ask questions based on the contents of these files — judgments, filings, rulings, etc.
+* Responses include **contextual answers** retrieved via FAISS from chunked and embedded documents.
 
-- Parse PDF, DOCX, PPTX, TXT, HTML, XLSX and CSV using [Unstructured.io](https://github.com/Unstructured-IO/unstructured)
-- Chunk and normalize text content
-- Generate embeddings using OpenAI `text-embedding-3-small`
-- Store in a FAISS vector index for semantic retrieval
-- Query through a clean Streamlit UI
-- Fully Dockerized for deployment
-- Includes examples and test suite
+> 🚀 No signup needed — just ask a legal question to get started.
 
 ---
 
-## 🧭 Project Structure
+## 🧠 Superlaw – Legal Document RAG Chatbot
 
-```bash
-GAL-RAG-System/
-├── config/                          # Configuration files (YAML)
-│   └── config.yaml
-├── examples/                        # Sample input and expected output formats
-│   ├── sample_input.txt
-│   └── sample_output.json
-├── outputs/                         # Parsed + chunked output files (grouped by date)
-│   └── 2025-05-18/
-│       └── <filename>.json
-├── samples/                         # Input documents (PDF, DOCX, PPTX, etc.)
-│   └── example.pdf
-├── src/                             # Core pipeline code
-│   ├── app.py                       # Streamlit semantic search interface
-│   ├── main.py                      # End-to-end document parsing + chunking
-│   ├── embed_and_store.py           # OpenAI embedding + FAISS indexing
-│   ├── parser_unstructured.py       # Parser using Unstructured.io
-│   ├── parser_docetl.py             # Deprecated in favor of Unstructured-based pipeline
-│   ├── chunking.py                  # Custom chunking logic
-│   ├── file_utils.py                # File loader, MIME checker, folder setup
-│   ├── metadata_extractor.py        # Metadata extractor from parsed output
-│   └── schema.py                    # Output formatter + JSON writer
-├── tests/                           # Unit tests for core modules
-│   └── test_chunking.py
-├── vector_index/                   # FAISS vector DB + metadata (generated)
-│   ├── faiss.index
-│   └── metadata.json
-├── Dockerfile                       # Container setup for reproducible runs
-├── requirements.txt                 # Python dependencies
-└── README.md                        # Project documentation
-
-````
+Superlaw is a Retrieval-Augmented Generation (RAG) chatbot built to help users query legal documents using natural language. Powered by FAISS, OpenAI embeddings, and Streamlit, it allows instant Q\&A from uploaded legal files.
 
 ---
 
-## 🚀 Quickstart
+### 🚀 Features
 
-### 1. Clone the Repo
+* 📄 Upload and parse legal documents (`PDF`, `DOCX`, `TXT`, etc.)
+* 🔍 Chunk content and create a FAISS vector index
+* 🧠 Generate embeddings using OpenAI's `text-embedding-3-small`
+* 💬 Ask questions and get contextual answers with source citations
+* 🖥️ Web interface powered by Streamlit
+* 📦 Containerized via Docker for easy deployment (e.g., EC2)
 
-```bash
-git clone https://github.com/GALBASE/GAL-RAG-System.git
-cd GAL-RAG-System
+---
+
+### 📁 Project Structure
+
+```
+superlaw/
+│
+├── samples/               # Input documents (PDFs, DOCX, etc.)
+├── vector_index/          # Generated FAISS index and metadata
+├── outputs/               # Chunked outputs (optional)
+├── src/
+│   ├── app.py             # Streamlit frontend
+│   ├── parser.py          # File parsing via unstructured
+│   ├── chunker.py         # Chunking logic
+│   ├── embed_and_store.py # Embedding + FAISS index creation
+│   ├── rag_chat.py        # RAG logic + LLM response
+│   └── config.yaml        # Config (optional)
+├── requirements.txt
+└── Dockerfile
 ```
 
-### 2. Install Requirements (Locally)
+---
+
+### 🧰 Requirements
+
+* Python 3.11
+* OpenAI API Key (set in `.env`)
+* Docker (for deployment)
+
+---
+
+### 🛠️ Local Setup
 
 ```bash
+git clone https://github.com/vjvashisth/superlaw.git
+cd superlaw
+python -m venv .venv
+source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-### 3. Export Your OpenAI Key
+Set your API key in `.env`:
 
-```bash
-export OPENAI_API_KEY=sk-xxxxxxxxxxxxxxxx
+```
+OPENAI_API_KEY=sk-...
 ```
 
----
-
-## 🔄 Running the Pipeline
-
-### ➤ Step 1: Parse and Chunk
-
-```bash
-python src/main.py
-```
-
-### ➤ Step 2: Generate Embeddings + Index
-
-```bash
-python src/embed_and_store.py
-```
-
-### ➤ Step 3: Launch the Streamlit App
+Run locally:
 
 ```bash
 streamlit run src/app.py
 ```
 
-Then open: [http://localhost:8501](http://localhost:8501)
-
 ---
 
-## 🐳 Run with Docker
+### 🐳 Docker Deployment
 
-### Build the Image
+Build image:
 
 ```bash
-docker build -t gal-rag-system .
+docker build -t superlaw-chatbot .
 ```
 
-### Run the App with Mounted FAISS Index
+Run container:
 
 ```bash
-docker run -p 8501:8501 \
-  -e OPENAI_API_KEY=sk-xxxxxxxxxxxxxxxx \
-  -v $PWD/vector_index:/app/vector_index \
-  gal-rag-system
+docker run -d -p 8501:8501 --env-file .env superlaw-chatbot
 ```
 
-> 🔁 Use `-v $PWD/outputs:/app/outputs` if embedding in-container is also needed.
+> ⚠️ Ensure `vector_index/` is included in the image or mounted via volume.
 
 ---
 
-## 📁 Examples
+### 🚧 Enhancements Roadmap
 
-* `examples/sample_input.txt` → describes input expectations
-* `examples/sample_output.json` → shows normalized output format
+Planned upgrades to improve Superlaw’s capabilities and user experience:
+
+1. **📚 Incremental Vector DB Updates**
+   Enable automatic or scheduled ingestion of new judgments to keep the knowledge base current.
+
+2. **🔗 API-Based Source Integration**
+   Pull legal documents via APIs (e.g., Indian Kanoon, Manupatra, or Court websites) for seamless ingestion and indexing.
+
+3. **🧾 Citation Highlighting**
+   Visually highlight which parts of the retrieved context were used to generate a response.
+
+4. **🔒 User Authentication & Access Control**
+   Set up OAuth or JWT-based authentication with role-based access for legal teams, firms, and premium users.
+
+5. **💎 Premium User Features**
+   Allow premium users to download referenced judgment copies, receive long-form summaries, or access GPT-4-turbo.
+
+6. **☁️ Cloud-Native Deployment**
+   Deploy to AWS/GCP/Azure using scalable services (e.g., ECS, EKS, Lambda + API Gateway) and CDN-backed UI.
+
+7. **🧠 LLM Experimentation Framework**
+   Switch easily between GPT-4, Claude, Mistral, Llama, or local open-source models using LangChain or LlamaIndex wrappers.
+
+8. **🌐 Web, Mobile & App Extensions**
+   Build public-facing UI: responsive web portal, Android/iOS apps, and browser extensions to make Superlaw universally accessible.
+
+9. **📊 Dashboard for Usage Analytics**
+   Track queries, document uploads, and usage metrics for admin and legal ops teams.
+
+10. **🗃️ Case-Type Based Indexing**
+    Organize vector DBs by case type (e.g., criminal, civil, tax, IP) for targeted legal research.
+
+11. **🎯 Intent-aware Answer Generation**
+    Add semantic query classification (e.g., facts, ruling, precedent, procedure) to tailor answers precisely.
+
+12. **🛡️ Legal Risk & Bias Detection**
+    Include risk disclaimers, fairness evaluations, and hallucination checks for compliance-grade reliability.
 
 ---
 
-## 🧪 Run Tests
+### 📜 License
 
-```bash
-pip install pytest
-pytest tests/
-```
-
----
-
-## 🔐 Environment Variables
-
-| Variable         | Description                                  |
-| ---------------- | -------------------------------------------- |
-| `OPENAI_API_KEY` | Your OpenAI API key (required for embedding) |
-
----
-
-## 📃 License
-
-MIT License
+MIT © 2025 Vijayendra Vashisth
