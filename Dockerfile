@@ -3,6 +3,7 @@ FROM python:3.11-slim
 WORKDIR /app
 
 COPY . /app
+COPY vector_index /app/vector_index
 
 ENV PYTHONPATH="/app"
 
