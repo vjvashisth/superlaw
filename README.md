@@ -10,6 +10,10 @@ This project is fully **Dockerized** and deployed on an **AWS EC2 instance**:
 
 > 🚀 No signup needed — just ask a legal question to get started.
 
+Sample Conversation - 
+
+![image](https://github.com/user-attachments/assets/23ca8095-3ef1-41bc-b2fa-3ee46b3006ea)
+
 ---
 
 ## 🧠 Superlaw – Legal Document RAG Chatbot
