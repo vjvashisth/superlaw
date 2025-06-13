@@ -1,0 +1,7 @@
+__pycache__/
+.env
+*.pdf
+*.docx
+outputs/
+vector_index/
+samples/
