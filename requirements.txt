@@ -3,6 +3,5 @@ faiss-cpu
 streamlit
 numpy
 tqdm
-unstructured
 python-dotenv
-unstructured[all-docs]
+unstructured[pdf,ppt,docx,html]
