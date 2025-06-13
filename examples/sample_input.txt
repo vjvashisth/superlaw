@@ -1,0 +1,2 @@
+Example input document: samples/Construction/John Barrow Design 04.04.25.pdf
+Expected output format: structured JSON with chunks and metadata.

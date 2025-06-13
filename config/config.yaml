@@ -1,0 +1,5 @@
+# Configuration for parsers and chunking
+
+# parser: docetl   # Options: unstructured OR docetl
+chunk_size: 300
+overlap: 100

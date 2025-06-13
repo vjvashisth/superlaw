@@ -1,0 +1,8 @@
+openai>=1.0.0
+faiss-cpu
+streamlit
+numpy
+tqdm
+unstructured
+python-dotenv
+unstructured[all-docs]
