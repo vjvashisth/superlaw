@@ -1,11 +1,11 @@
 # src/app.py
 
 import streamlit as st
-from rag_chat import generate_rag_response
+from src.rag_chat import generate_rag_response
 
 st.set_page_config(page_title="📚 RAG Chatbot", layout="wide")
 
-st.title("🧠 GAL-RAG Chatbot")
+st.title("🧠 Superlaw-RAG Chatbot")
 st.markdown("Ask any question based on your document knowledge base.")
 
 # Initialize chat history
