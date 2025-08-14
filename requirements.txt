@@ -5,3 +5,5 @@ numpy
 tqdm
 python-dotenv
 unstructured[pdf,ppt,docx,html]
+pandas
+pillow
